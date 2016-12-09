@@ -67,16 +67,52 @@ function test_routing() {
 function test_intersect(r) {
   console.log(r);
 
-  test_place_marker();
+  test_haversine();
 }
 
-function test_place_marker() {
-  // get_latlng_from_address('Los Angeles, CA').then(function(latlng) {
-  //   console.log('promise fulfilled ' + latlng);
-  // })
-  place_marker_on_address('Los Angeles, CA').then(function() {
-    console.log('Marker placed');
-  })
+function test_place_marker(x) {
+  return new Promise(
+    function(resolve, reject) {
+      place_marker_on_address(x).then(function(latlng) {
+        console.log('Marker placed at ' + latlng);
+
+        resolve({
+          address: x,
+          latlng: latlng
+        })
+      })
+    }
+  );
+}
+
+function test_haversine() {
+  var places = new Array();
+  var loaded = 0;
+  var push_promise = function(x) {
+    places.push(x);
+    loaded++;
+
+    if (loaded == 4) {
+      run_test();
+    }
+  }
+  
+  test_place_marker('Los Angeles, CA').then(push_promise);
+  test_place_marker('Long Beach, CA').then(push_promise);
+  test_place_marker('Glendale, CA').then(push_promise);
+  test_place_marker('Pasadena, CA').then(push_promise);
+
+  var run_test = function() {
+    for (var i = 0; i < places.length; i++) {
+      for (var j = i + 1; j < places.length; j++) {
+        var a = places[i].latlng;
+        var b = places[j].latlng;
+        var d = get_distance(a, b);
+
+        console.log(places[i].address + ' -> ' + places[j].address + ' = ' + d);
+      }
+    }
+  }
 }
 
 function place_marker_on_address(x) {
@@ -88,7 +124,7 @@ function place_marker_on_address(x) {
           lng: latlng.lng()
         })
 
-        resolve();
+        resolve(latlng);
       })
     }
   );
