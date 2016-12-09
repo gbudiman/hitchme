@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var models = require('../models');
 
 /* GET home page. */
 router
@@ -8,6 +9,17 @@ router
   })
   .get('/planner', function(req, res, next) {
     res.render('planner', { title: 'Planner '});
+  })
+  .get('/test_db', function(req, res, next) {
+    models.user.findAll({
+
+    }).then(function(users) {
+      res.render('test_db', { 
+        title: 'Test Database Connection',
+        users: users
+      });
+    })
+    
   })
 
 module.exports = router;
