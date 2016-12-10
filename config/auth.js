@@ -1,7 +1,7 @@
 module.exports = {
   facebook_auth: {
-    client_id: '216881162054658',
-    client_secret: '2962cbeb550e74d6e39f8d6c1f19f25d',
+    client_id: process.env.FB_CLIENT_ID,
+    client_secret: process.env.FB_CLIENT_SECRET,
     callback_url: '/auth/facebook/callback'
   }
 }
