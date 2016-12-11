@@ -2,4 +2,6 @@ extends layout
 
 block content
   h1= title
-  div= users[0].name
+  div= users.length + ' user found'
+  each user in users
+    div= user.name

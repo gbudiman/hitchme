@@ -24,13 +24,14 @@ router
         users: users
       });
     })
-  })
-  .get('/login/facebook',
-    passport.authenticate('facebook', { scope: 'email' }))
-  .get('/login/facebook/callback',
-    passport.authenticate('facebook', {
-      successRedirect: '/planner',
-      failureRedirect: '/'
-    }))
+  });
+
+router.get('/login/facebook',
+  passport.authenticate('facebook'));
+router.get('/login/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/planner',
+    failureRedirect: '/'
+  }));
 
 module.exports = router;
