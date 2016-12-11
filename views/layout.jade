@@ -26,9 +26,14 @@ html
             else
               li(class='dropdown')
                 a(class='dropdown-toggle', href='#', data-toggle='dropdown')= profile_name()
+                  &nbsp;
+                  span(class='caret')
                 ul(class='dropdown-menu')
                   li
                     a(href='#') Profile
+
+          form(class='navbar-form navbar-right')
+            input(class='form-control', type='text', placeholder='Find Events...')
     block content
 
     script(src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
