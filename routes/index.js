@@ -9,8 +9,7 @@ var session_data;
 
 var extract_minimum_user_data = function(d) {
   if (d == undefined) { return undefined; }
-
-  console.log(d);
+  
   return {
     name: d.user.name,
     id: d.user.id
