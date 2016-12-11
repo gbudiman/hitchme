@@ -12,8 +12,6 @@ passport.use(new Strategy({
 
   function(access_token, refresh_token, profile, done) {
     process.nextTick(function() {
-      //console.log(profile);
-      console.log('ticking');
       models.user.findById(profile.id).then(function(user) {
         if (user) {
 
@@ -38,9 +36,11 @@ passport.use(new Strategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  done(null, user.id);
 })
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+passport.deserializeUser(function(id, done) {
+  models.user.findById(id).then(function(user) {
+    done(null, user);
+  })
 })
