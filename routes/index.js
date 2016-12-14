@@ -17,6 +17,7 @@ var extract_minimum_user_data = function(d) {
 }
 
 function is_authenticated(req, res, next) {
+  console.log(req);
   if (req.user != undefined && req.user.id) {
     return next();
   }
@@ -58,5 +59,24 @@ router
       successRedirect: '/planner',
       failureRedirect: '/'
     }))
+  .post('/event/create', is_authenticated, function(req, res, next) {
+    models.event.create({
+      name: req.body.name,
+      address: req.body.address,
+      time_start: req.body.start_time,
+      time_end: req.body.end_time.length > 0 ? req.body.end_time : null
+    }).then(function(result) {
+      console.log('then..');
+      console.log(result);
+      console.log('promised');
+      if (result.dataValues != undefined) {
+        res.json({
+          data: result.dataValues,
+          status: 'success'
+        });
+      }
+      
+    })
+  })
 
 module.exports = router;

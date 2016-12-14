@@ -18,6 +18,10 @@ block content
           label(for = 'event-name') Time
           input(class = 'form-control', id = 'event-start-date', placeholder = 'Start Time')
           input(class = 'form-control', id = 'event-end-date', placeholder = 'End Time (optional)')
+        div(class = 'col-xs-6')
+          button(class = 'btn btn-default btn-block', type = 'button') Cancel
+        div(class = 'col-xs-6')
+          button(class = 'btn btn-primary btn-block', type = 'button', id = 'event-create') Create Event
 
   script(src = '/javascripts/positioning_helper.js')
   script(src = '/javascripts/haversine.js')

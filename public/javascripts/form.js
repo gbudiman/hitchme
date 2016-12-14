@@ -1,3 +1,21 @@
+var address_is_valid = false;
+var timeline_is_valid = false;
+
+function check_form_is_valid() {
+  var name_is_not_empty = $('#event-name').val().trim().length > 0;
+
+  console.log(name_is_not_empty + ' && ' + address_is_valid);
+  if (name_is_not_empty && address_is_valid && timeline_is_valid) {
+    $('#event-create').prop('disabled', false);
+
+    return true;
+  } else {
+    $('#event-create').prop('disabled', true);
+
+    return false;
+  }
+}
+
 function check_forward_timeline() {
   var current = moment();
   var start = $('#event-start-date').val();
@@ -28,6 +46,9 @@ function check_forward_timeline() {
 
     alert('You can\'t create event in the past');
   }
+
+  timeline_is_valid = true;
+  check_form_is_valid();
 }
 
 function handle_address_input(event, value) {
@@ -42,8 +63,13 @@ function handle_map_update_address(address) {
   place_marker_on_address(address)
     .then(function(latlng) {
       map.panTo(latlng);
+      address_is_valid = true;
+      check_form_is_valid();
   }).catch(
     function(reason) {
+      address_is_valid = false;
+      check_form_is_valid();
+
       switch(reason) {
         case 'ZERO_RESULTS':
           alert('No such address found');
@@ -53,9 +79,14 @@ function handle_map_update_address(address) {
       }
     }
   );
+
+  
 }
 
+// This function must be called upon map load
+// See init_map() in planner.js
 function attach_address_autocomplete() {
+
   var autocomplete = new google.maps.places.Autocomplete(document.getElementById('event-address'));
 
   autocomplete.addListener('place_changed', function() {
@@ -63,23 +94,58 @@ function attach_address_autocomplete() {
   })
 }
 
+function attach_create_event() {
+  $('#event-create').on('click', function() {
+    if (!check_form_is_valid()) { return; }
+
+    var that = $(this);
+    that.prop('disabled', true).text('Creating event...');
+
+    $.ajax({
+      type: 'POST',
+      url: '/event/create',
+      data: {
+        name: $('#event-name').val().trim(),
+        address: $('#event-address').val().trim(),
+        start_time: $('#event-start-date').val().trim(),
+        end_time: $('#event-end-date').val().trim()
+      }
+    }).done(function(result) {
+      if (result.status == 'success') {
+        console.log(result.data);
+        that.prop('disabled', true).text('Create Event');
+      }
+      alert('success');
+    }).fail(function() {
+      alert('error');
+      that.prop('disabled', false).text('Failed. Try again?')
+    })
+  })
+}
+
 $(function() {
   $('#event-start-date').datetimepicker({
-    inline: true,
     sideBySide: true
   }).on('dp.change', check_forward_timeline);
 
   $('#event-end-date').datetimepicker({
-    inline: true,
     sideBySide: true
   }).on('dp.change', check_forward_timeline);
 
   $('#event-start-date').val('');
   $('#event-end-date').val('');
+  $('#event-name').focus();
+  check_form_is_valid();
 
   $('#event-address').keypress(function(event) {
     handle_address_input(event, $(this).val());
   })
 
-  //attach_address_autocomplete();
+  $('#event-name')
+    .on('blur', check_form_is_valid)
+    .keyup(function(event) {
+      check_form_is_valid();
+    });
+
+  attach_create_event();  
 })
