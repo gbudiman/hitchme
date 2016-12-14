@@ -56,6 +56,8 @@ module.exports = {
       trip_id: { type: Sequelize.BIGINT },
       lat: { type: Sequelize.FLOAT },
       lng: { type: Sequelize.FLOAT },
+      lat_e6: { type: Sequelize.INTEGER },
+      lng_e6: { type: Sequelize.INTEGER },
       time_estimation: { type: Sequelize.INTEGER }
     })
 

@@ -16,6 +16,14 @@ var extract_minimum_user_data = function(d) {
   }
 }
 
+function is_authenticated(req, res, next) {
+  if (req.user != undefined && req.user.id) {
+    return next();
+  }
+
+  res.redirect('/login/facebook');
+}
+
 require('../config/passport.js');
 /* GET home page. */
 router
@@ -25,7 +33,7 @@ router
       session_data: session_data 
     });
   })
-  .get('/planner', function(req, res, next) {
+  .get('/planner', is_authenticated, function(req, res, next) {
     session_data = extract_minimum_user_data(req);
 
     res.render('planner', { 
