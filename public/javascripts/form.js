@@ -30,6 +30,39 @@ function check_forward_timeline() {
   }
 }
 
+function handle_address_input(event, value) {
+  var key_code = event.keyCode ? event.keyCode : event.which;
+
+  if (key_code == 13) {
+    handle_map_update_address(value);
+  }
+}
+
+function handle_map_update_address(address) {
+  place_marker_on_address(address)
+    .then(function(latlng) {
+      map.panTo(latlng);
+  }).catch(
+    function(reason) {
+      switch(reason) {
+        case 'ZERO_RESULTS':
+          alert('No such address found');
+          break;
+        default:
+          alert('Generic exception: ' + reason);
+      }
+    }
+  );
+}
+
+function attach_address_autocomplete() {
+  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('event-address'));
+
+  autocomplete.addListener('place_changed', function() {
+    handle_map_update_address($('#event-address').val());
+  })
+}
+
 $(function() {
   $('#event-start-date').datetimepicker({
     inline: true,
@@ -45,12 +78,8 @@ $(function() {
   $('#event-end-date').val('');
 
   $('#event-address').keypress(function(event) {
-    var key_code = event.keyCode ? event.keyCode : event.which;
-    if (key_code == 13) {
-      place_marker_on_address($(this).val())
-        .then(function(latlng) {
-          map.panTo(latlng);
-        });
-    }
+    handle_address_input(event, $(this).val());
   })
+
+  //attach_address_autocomplete();
 })

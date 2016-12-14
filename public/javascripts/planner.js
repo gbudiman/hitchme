@@ -24,6 +24,7 @@ function init_map() {
         $(window).resize(function() {
           reposition(map);
         });
+        attach_address_autocomplete();
       }
     }
   })
@@ -205,15 +206,20 @@ function test_haversine() {
 function place_marker_on_address(x) {
   return new Promise(
     function(resolve, reject) {
-      get_latlng_from_address(x).then(function(latlng) {
-        console.log(latlng);
-        map.addMarker({
-          lat: latlng.lat(),
-          lng: latlng.lng()
-        })
+      get_latlng_from_address(x)
+        .then(function(latlng) {
+          console.log(latlng);
+          map.addMarker({
+            lat: latlng.lat(),
+            lng: latlng.lng()
+          })
 
-        resolve(latlng);
-      })
+          resolve(latlng);
+      }).catch(
+        function(reason) {
+          reject(reason);
+        }
+      )
     }
   );
 }
@@ -226,6 +232,8 @@ function get_latlng_from_address(x) {
         callback: function(results, status) {
           if (status == 'OK') {
             resolve(results[0].geometry.location);
+          } else {
+            reject(status);
           }
         }
       })
