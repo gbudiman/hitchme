@@ -1,10 +1,27 @@
 extends layout
 
 block content
-  h1= title
-  div(id = 'map-canvas')
+  div(class = 'row container-fluid')
+    div(class = 'col-xs-8', id = 'map-canvas')
+    div(class = 'col-xs-4', id = 'map-interactions')
+      a(class = 'btn btn-block btn-default', href = '#') Create an event
+      a(class = 'btn btn-block btn-default', href = '#') Plan a trip
 
+      form
+        div(class = 'form-group')
+          label(for = 'event-name') Event Name
+          input(class = 'form-control', id = 'event-name', placeholder = 'Event Name')
+        div(class = 'form-group')
+          label(for = 'event-address') Address
+          input(class = 'form-control', id = 'event-address', placeholder = 'Address')
+        div(class = 'form-group')
+          label(for = 'event-name') Time
+          input(class = 'form-control', id = 'event-start-date', placeholder = 'Start Time')
+          input(class = 'form-control', id = 'event-end-date', placeholder = 'End Time (optional)')
+
+  script(src = '/javascripts/positioning_helper.js')
   script(src = '/javascripts/haversine.js')
   script(src = '/javascripts/gmaps.min.js')
   script(src = '/javascripts/planner.js')
+  script(src = '/javascripts/form.js')
   script(src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB0HMkhjSZwLxLMtOzokyyxQueN6G7fGK0&callback=init_map', async, defer)

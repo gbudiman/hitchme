@@ -19,10 +19,16 @@ function init_map() {
           zoom: 10
         })
 
-        test_routing();
+        //test_routing();
+        reposition(map);
+        $(window).resize(function() {
+          reposition(map);
+        });
       }
     }
   })
+
+  
 }
 
 function test_routing() {
@@ -200,6 +206,7 @@ function place_marker_on_address(x) {
   return new Promise(
     function(resolve, reject) {
       get_latlng_from_address(x).then(function(latlng) {
+        console.log(latlng);
         map.addMarker({
           lat: latlng.lat(),
           lng: latlng.lng()

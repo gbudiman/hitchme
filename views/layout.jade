@@ -12,6 +12,16 @@ doctype html
 html
   head
     title= title
+    script(src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src = 'http://code.jquery.com/ui/1.12.1/jquery-ui.min.js')
+    script(src = '/javascripts/moment-with-locales.min.js')
+    link(rel='stylesheet', href='http://code.jquery.com/ui/1.12.1/themes/redmond/jquery-ui.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/javascripts/bootstrap-datetimepicker.min.js')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-datetimepicker.min.css')
   body
     nav(class='navbar navbar-inverse')
       div(class='container-fluid')
@@ -36,8 +46,4 @@ html
             input(class='form-control', type='text', placeholder='Find Events...')
     block content
 
-    script(src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    
