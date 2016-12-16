@@ -23,6 +23,19 @@ block content
         div(class = 'col-xs-6')
           button(class = 'btn btn-primary btn-block', type = 'button', id = 'event-create') Create Event
 
+      div(class = 'row col-xs-12') 
+        span Event successfully created.
+        br
+        span(id = 'created-event-name') Event name
+        br
+        span(id = 'created-event-address') Event address
+        br
+        span(id = 'created-event-start-date') Event start date
+        br
+        span(id = 'created-event-end-date') Event end date
+        hr
+        span Driving to this event?
+
   script(src = '/javascripts/positioning_helper.js')
   script(src = '/javascripts/haversine.js')
   script(src = '/javascripts/gmaps.min.js')

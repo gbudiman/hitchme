@@ -4,7 +4,6 @@ var timeline_is_valid = false;
 function check_form_is_valid() {
   var name_is_not_empty = $('#event-name').val().trim().length > 0;
 
-  console.log(name_is_not_empty + ' && ' + address_is_valid);
   if (name_is_not_empty && address_is_valid && timeline_is_valid) {
     $('#event-create').prop('disabled', false);
 
@@ -18,8 +17,8 @@ function check_form_is_valid() {
 
 function check_forward_timeline() {
   var current = moment();
-  var start = $('#event-start-date').val();
-  var end = $('#event-end-date').val();
+  var start = $('#event-start-date').val().trim();
+  var end = $('#event-end-date').val().trim();
 
   if (start.length != 0 && end.length != 0) {
     if (!moment(start).isBefore(end)) {
@@ -31,7 +30,9 @@ function check_forward_timeline() {
     }
   }
 
+  console.log($('#event-start-date').val());
   if (start.length != 0 && !moment().isBefore(moment(start))) {
+    console.log('here');
     $('#event-start-date')
       .data('DateTimePicker')
         .date(moment(current).add(1, 'days'));
@@ -125,15 +126,17 @@ function attach_create_event() {
 
 $(function() {
   $('#event-start-date').datetimepicker({
-    sideBySide: true
+    sideBySide: true,
+    defaultDate: moment().add(1, 'day')
   }).on('dp.change', check_forward_timeline);
 
   $('#event-end-date').datetimepicker({
-    sideBySide: true
+    sideBySide: true,
+    defaultDate: moment().add(2, 'day')
   }).on('dp.change', check_forward_timeline);
 
-  $('#event-start-date').val('');
-  $('#event-end-date').val('');
+  // $('#event-start-date').val('');
+  // $('#event-end-date').val('');
   $('#event-name').focus();
   check_form_is_valid();
 
