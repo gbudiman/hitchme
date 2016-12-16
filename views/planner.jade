@@ -4,10 +4,10 @@ block content
   div(class = 'row container-fluid')
     div(class = 'col-xs-8', id = 'map-canvas')
     div(class = 'col-xs-4', id = 'map-interactions')
-      a(class = 'btn btn-block btn-default', href = '#') Create an event
-      a(class = 'btn btn-block btn-default', href = '#') Plan a trip
+      a(class = 'btn btn-block btn-default', href = '#', id = 'button-create-event') Create an event
+      
 
-      form
+      form(class = 'init-hidden tb-padded', id = 'form-create-event')
         div(class = 'form-group')
           label(for = 'event-name') Event Name
           input(class = 'form-control', id = 'event-name', placeholder = 'Event Name')
@@ -25,23 +25,30 @@ block content
           button(class = 'btn btn-default btn-block', type = 'button') Cancel
         div(class = 'col-xs-6')
           button(class = 'btn btn-primary btn-block', type = 'button', id = 'event-create') Create Event
+        div(class = 'row')
 
-      div(class = 'row col-xs-12') 
-        span Event successfully created.
+      div(class = 'row')
+      div(class = 'col-xs-12 init-hidden', id = 'form-created-event',) 
+        strong Event successfully created:
         br
-        span(id = 'created-event-name') Event name
+        strong
+          h4(id = 'created-event-name')
         br
-        span(id = 'created-event-address') Event address
+        span(id = 'created-event-address')
         br
-        span(id = 'created-event-start-date') Event start date
+        span(id = 'created-event-start-date')
         br
-        span(id = 'created-event-end-date') Event end date
+        span(id = 'created-event-end-date')
         hr
         span Driving to this event?
+      div(class = 'row')
+
+      a(class = 'btn btn-block btn-default', href = '#', id = 'button-create-trip') Plan a trip
 
   script(src = '/javascripts/positioning_helper.js')
   script(src = '/javascripts/haversine.js')
   script(src = '/javascripts/gmaps.min.js')
   script(src = '/javascripts/planner.js')
-  script(src = '/javascripts/form.js')
+  script(src = '/javascripts/main_form.js')
+  script(src = '/javascripts/event_form.js')
   script(src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB0HMkhjSZwLxLMtOzokyyxQueN6G7fGK0&callback=init_map&libraries=places', async, defer)
