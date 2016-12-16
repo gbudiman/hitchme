@@ -18,6 +18,9 @@ block content
           label(for = 'event-name') Time
           input(class = 'form-control', id = 'event-start-date', placeholder = 'Start Time')
           input(class = 'form-control', id = 'event-end-date', placeholder = 'End Time (optional)')
+          span Event duration: 
+            span(id = 'event-duration') 
+          div(class = 'text-danger', id = 'event-time-error')
         div(class = 'col-xs-6')
           button(class = 'btn btn-default btn-block', type = 'button') Cancel
         div(class = 'col-xs-6')

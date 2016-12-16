@@ -20,35 +20,40 @@ function check_forward_timeline() {
   var start = $('#event-start-date').val().trim();
   var end = $('#event-end-date').val().trim();
 
-  if (start.length != 0 && end.length != 0) {
-    if (!moment(start).isBefore(end)) {
-      $('#event-end-date')
-        .data('DateTimePicker')
-          .date(moment(start).add(1, 'days'));
+  var duration = moment.duration(moment(end).diff(moment(start)));
+  var error_text = new Array();
 
-      alert('End Time must be after Start Time');
+  $('#event-duration').text(duration.asHours() + ' hours');
+
+  if (start.length != 0 && end.length != 0) {
+    if (!moment(start).isBefore(moment(end))) {
+
+      // $('#event-end-date')
+      //   .data('DateTimePicker')
+      //     .date(moment(start).add(1, 'days'));
+
+      error_text.push('End Time must be after Start Time');
     }
   }
 
-  console.log($('#event-start-date').val());
   if (start.length != 0 && !moment().isBefore(moment(start))) {
-    console.log('here');
-    $('#event-start-date')
-      .data('DateTimePicker')
-        .date(moment(current).add(1, 'days'));
+    // $('#event-start-date')
+    //   .data('DateTimePicker')
+    //     .date(moment(current).add(1, 'days'));
 
-    alert('You can\'t create event in the past');
+    error_text.push('Event start time is in the past');
   }
 
   if (end.length != 0 && !moment().isBefore(moment(end))) {
-    $('#event-end-date')
-      .data('DateTimePicker')
-        .date(moment(current).add(1, 'days'));
+    // $('#event-end-date')
+    //   .data('DateTimePicker')
+    //     .date(moment(current).add(1, 'days'));
 
-    alert('You can\'t create event in the past');
+    error_text.push('Event end time is in the past');
   }
 
-  timeline_is_valid = true;
+  $('#event-time-error').html(error_text.join('<br />'));
+  timeline_is_valid = error_text.length == 0;
   check_form_is_valid();
 }
 
@@ -124,7 +129,9 @@ function attach_create_event() {
   })
 }
 
-$(function() {
+function initialize_form() {
+  $('#event-name').val('');
+  $('#event-address').val('');
   $('#event-start-date').datetimepicker({
     sideBySide: true,
     defaultDate: moment().add(1, 'day')
@@ -132,12 +139,15 @@ $(function() {
 
   $('#event-end-date').datetimepicker({
     sideBySide: true,
-    defaultDate: moment().add(2, 'day')
+    defaultDate: moment().add(1, 'day').add(1, 'hour')
   }).on('dp.change', check_forward_timeline);
 
-  // $('#event-start-date').val('');
-  // $('#event-end-date').val('');
+  check_forward_timeline();
   $('#event-name').focus();
+}
+
+$(function() {
+  initialize_form();
   check_form_is_valid();
 
   $('#event-address').keypress(function(event) {
